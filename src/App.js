@@ -6,12 +6,38 @@ import {
   View,
   Button
 } from 'react-native';
+import Alert from './components/Alert';
 
 export default class App extends Component {
 
   _onSimpleAlert = () => {
     console.log('test');
   };
+
+  _onChoiceAlert = () => {
+    console.log('test');
+  };
+
+  _onCloseAlert(){
+
+  };
+
+  _onAcceptAlert(){
+
+  }
+
+  _alertChoiceButtons = [
+    {
+      text: 'No',
+      onPress: this._onCloseAlert,
+      style: 'negative'
+    },
+    {
+      text: 'Yes, I do',
+      onPress: this._onAcceptAlert,
+      style: 'positive'
+    }
+  ];
 
   render() {
     return (
@@ -38,12 +64,15 @@ export default class App extends Component {
           </View>
           <View style={styles.buttonWrap}>
             <Button
-              onPress={this._onSimpleAlert}
+              onPress={this._onChoiceAlert}
               color="white"
               title="Choice Alert"
             />
           </View>
         </View>
+        <Alert
+          buttons={this._alertChoiceButtons}
+        />
       </View>
     );
   }
@@ -71,10 +100,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   actions: {
-    // paddingVertical: 40,
     flex: 1,
-    // backgroundColor: 'red',
-    // justifyContent: 'space-between'
   },
   buttonWrap: {
     width: 200,
@@ -84,6 +110,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#2BADFF',
     borderColor: '#FFFFFF',
     borderWidth: 1,
-    borderRadius: 6,
+    borderRadius: 2,
   }
 });
