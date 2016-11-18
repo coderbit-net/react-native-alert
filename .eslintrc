@@ -1,0 +1,72 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "env": {
+    "es6": true
+  },
+  "globals": {
+    "__DEV__": true
+  },
+  "rules": {
+    "max-len": ["warn", 120, 2, {
+      "ignoreUrls": true,
+      "ignoreComments": false,
+      "ignoreStrings": true,
+      "ignoreTemplateLiterals": true
+    }],
+    "comma-dangle": ["error", "never"],
+    "no-underscore-dangle": "off",
+    "no-param-reassign": ["error", {
+      "props": false
+    }],
+    "arrow-parens": ["error", "always"],
+    "arrow-body-style": "off",
+    "no-use-before-define": "off",
+    "consistent-return": "off",
+    "no-plusplus": ["error", {
+      "allowForLoopAfterthoughts": true
+    }],
+    "class-methods-use-this": "off",
+    "import/prefer-default-export": "off",
+    "react/jsx-filename-extension": ["error", {
+      "extensions": [".js", ".jsx"]
+    }],
+    "react/prefer-stateless-function": ["error", {
+      "ignorePureComponents": true
+    }],
+    "react/no-multi-comp": "off",
+    "react/sort-comp": ["error", {
+      "order": [
+        "lifecycle",
+        "everything-else",
+        "render"
+      ],
+      "groups": {
+        "lifecycle": [
+          "displayName",
+          "propTypes",
+          "contextTypes",
+          "childContextTypes",
+          "mixins",
+          "statics",
+          "defaultProps",
+          "state",
+          "constructor",
+          "getDefaultProps",
+          "getInitialState",
+          "getChildContext",
+          "componentWillMount",
+          "componentDidMount",
+          "componentWillReceiveProps",
+          "shouldComponentUpdate",
+          "componentWillUpdate",
+          "componentDidUpdate",
+          "componentWillUnmount"
+        ]
+      }
+    }]
+  }
+}
