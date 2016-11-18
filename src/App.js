@@ -63,7 +63,7 @@ export default class App extends Component {
             Welcome to React Native!
           </Text>
           <Text style={styles.instructions}>
-            This is a sample applicatoin for {"\n"}
+            This is a sample application for {'\n'}
             custom alert popup component
           </Text>
         </View>
@@ -85,16 +85,16 @@ export default class App extends Component {
         </View>
         <Alert
           ref={(a) => {
-            this._simpleAlert = a
+            this._simpleAlert = a;
           }}
           icon={<TouchIcon />}
           title="Just FYI"
-          text="React native is the fastest way to build a multiplatform application "
+          text="React native is the fastest way to build a multi platform application "
           buttons={this._alertSimpleButton}
         />
         <Alert
           ref={(a) => {
-            this._choiceAlert = a
+            this._choiceAlert = a;
           }}
           icon={<TouchIcon />}
           title="Touch ID"
@@ -109,26 +109,26 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#006EB2',
+    backgroundColor: '#006EB2'
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
     color: '#FFFFFF',
-    margin: 10,
+    margin: 10
   },
   instructions: {
     textAlign: 'center',
     color: '#FFFFFF',
-    marginBottom: 5,
+    marginBottom: 5
   },
   info: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   actions: {
-    flex: 1,
+    flex: 1
   },
   buttonWrap: {
     width: 200,
@@ -138,6 +138,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#2BADFF',
     borderColor: '#FFFFFF',
     borderWidth: 1,
-    borderRadius: 2,
+    borderRadius: 2
   }
 });

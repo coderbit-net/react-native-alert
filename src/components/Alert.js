@@ -8,8 +8,6 @@ import {
   View
 } from 'react-native';
 
-const Screen = Dimensions.get('window');
-
 export default class Alert extends PureComponent {
   static propTypes = {
     icon: PropTypes.node,
@@ -17,21 +15,21 @@ export default class Alert extends PureComponent {
     text: PropTypes.string,
     buttons: PropTypes.arrayOf(
       PropTypes.shape({
-          text: PropTypes.string.isRequired,
-          onPress: PropTypes.func.isRequired,
-          style: PropTypes.string.isRequired
-        }
+        text: PropTypes.string.isRequired,
+        onPress: PropTypes.func.isRequired,
+        style: PropTypes.string.isRequired
+      }
       )
     )
   };
 
   state = {
-    visible: this.props.visible || false,
+    visible: false,
     animatedValue: new Animated.Value(1000)
   };
 
   _show = () => {
-    this.setState({visible: true});
+    this.setState({ visible: true });
     Animated.timing(this.state.animatedValue, {
       toValue: 0,
       duration: 300
@@ -39,7 +37,7 @@ export default class Alert extends PureComponent {
   };
 
   _hide = () => {
-    this.setState({visible: false});
+    this.setState({ visible: false });
     Animated.timing(this.state.animatedValue, {
       toValue: 1000,
       duration: 400
@@ -54,23 +52,23 @@ export default class Alert extends PureComponent {
             <TouchableOpacity
               style={buttonsStyles[button.style]}
               key={index}
-              onPress={ () => {
+              onPress={() => {
                 button.onPress();
                 this._hide();
               }}
             >
-              <Text style={[buttonsStyles[button.style + 'Text'], buttonsStyles.text]}>
+              <Text style={[buttonsStyles[`${button.style}Text`], buttonsStyles.text]}>
                 {button.text}
               </Text>
             </TouchableOpacity>
-          )
+          );
         }
       )
-    )
-  };
+    );
+  }
 
   render() {
-    const {animatedValue} = this.state;
+    const { animatedValue } = this.state;
     const {
       icon,
       title,
@@ -80,11 +78,13 @@ export default class Alert extends PureComponent {
 
     console.log(animatedValue);
     return (
-      <Animated.View style={[
-        styles.alert,
-        {top: animatedValue}
-      ]}>
-        <View style={styles.overlay}/>
+      <Animated.View
+        style={[
+          styles.alert,
+        { top: animatedValue }
+        ]}
+      >
+        <View style={styles.overlay} />
         <View style={styles.container}>
           <View style={styles.body}>
             <View style={styles.icon}>
@@ -98,7 +98,7 @@ export default class Alert extends PureComponent {
           </View>
         </View>
       </Animated.View>
-    )
+    );
   }
 }
 
@@ -115,13 +115,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    ...absolutePosition,
+    ...absolutePosition
   },
   overlay: {
     backgroundColor: '#000000',
     flex: 1,
     opacity: 0.7,
-    ...absolutePosition,
+    ...absolutePosition
   },
   container: {
     width: 305,
@@ -129,12 +129,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
-    borderWidth: 0,
+    borderWidth: 0
   },
   body: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 20,
+    paddingVertical: 20
   },
   icon: {
     paddingVertical: 10
@@ -143,14 +143,14 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     fontSize: 18,
     fontWeight: '600',
-    color: '#2d363d',
+    color: '#2d363d'
   },
   text: {
     width: 242,
     paddingVertical: 10,
     textAlign: 'center',
     fontSize: 18,
-    color: '#95a5b2',
+    color: '#95a5b2'
   },
   actions: {
     flexDirection: 'row',
@@ -159,14 +159,14 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: '#dadfe4'
 
-  },
+  }
 });
 
 const buttonWrapper = {
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
-  height: 55,
+  height: 55
 
 };
 
@@ -175,31 +175,31 @@ const buttonsStyles = {
     ...buttonWrapper,
     backgroundColor: 'transparent',
     borderBottomLeftRadius: 8,
-    borderWidth: 0,
+    borderWidth: 0
   },
   positive: {
     ...buttonWrapper,
     backgroundColor: '#FFB144',
     borderBottomRightRadius: 8,
-    borderWidth: 0,
+    borderWidth: 0
   },
   neutral: {
     ...buttonWrapper,
     backgroundColor: 'transparent',
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
-    borderWidth: 0,
+    borderWidth: 0
   },
   text: {
     fontSize: 18
   },
   negativeText: {
-    color: '#95a5b2',
+    color: '#95a5b2'
   },
   positiveText: {
-    color: '#FFFFFF',
+    color: '#FFFFFF'
   },
   neutralText: {
     color: '#FFB144'
-  },
+  }
 };
