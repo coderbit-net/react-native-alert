@@ -1,15 +1,20 @@
 import React, { PureComponent, PropTypes } from 'react';
 import {
+  Animated,
+  Dimensions,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from 'react-native';
 
+const Screen = Dimensions.get('window');
+
 export default class Alert extends PureComponent {
   static propTypes = {
     buttons: PropTypes.arrayOf(
       PropTypes.shape({
+          visible: PropTypes.bool,
           icon: PropTypes.node,
           text: PropTypes.string.isRequired,
           onPress: PropTypes.func.isRequired,
@@ -17,6 +22,28 @@ export default class Alert extends PureComponent {
         }
       )
     )
+  };
+
+  state = {
+    visible: this.props.visible || false
+  };
+
+  _visibility() {
+    const {visible} = this.state;
+
+    if (visible) {
+      return {top: 0};
+    } else {
+      return {top: 1000};
+    }
+  }
+
+  _show = () => {
+    this.setState({ visible: true });
+  };
+
+  _hide = () => {
+    this.setState({ visible: false });
   };
 
   _renderButtons(buttons) {
@@ -27,7 +54,10 @@ export default class Alert extends PureComponent {
             <TouchableOpacity
               style={buttonsStyles[button.style]}
               key={index}
-              onPress={button.onPress}
+              onPress={ () => {
+                button.onPress();
+                this._hide();
+              }}
             >
               <Text style={[buttonsStyles[button.style + 'Text'], buttonsStyles.text]}>
                 {button.text}
@@ -40,6 +70,7 @@ export default class Alert extends PureComponent {
   };
 
   render() {
+    // console.log(Screen);
     const {
       icon,
       title,
@@ -48,7 +79,10 @@ export default class Alert extends PureComponent {
     } = this.props;
 
     return (
-      <View style={styles.alert}>
+      <View style={[
+        styles.alert,
+        this._visibility()
+      ]}>
         <View style={styles.overlay}/>
         <View style={styles.container}>
           <View style={styles.body}>
@@ -80,7 +114,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    ...absolutePosition
+    ...absolutePosition,
   },
   overlay: {
     backgroundColor: '#B26E0F',

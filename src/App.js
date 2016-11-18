@@ -12,31 +12,43 @@ import TouchIcon from './components/graphics/TouchIcon';
 export default class App extends Component {
 
   _onSimpleAlert = () => {
-    console.log('test');
+    this._simpleAlert._show();
   };
 
   _onChoiceAlert = () => {
-    console.log('test');
+    this._choiceAlert._show();
   };
 
-  _onCloseAlert(){
-
+  _onNegativePress = () => {
+    console.log('Negative button pressed');
   };
 
-  _onAcceptAlert(){
+  _onPositivePress = () => {
+    console.log('Positive button pressed');
+  };
 
-  }
+  _onNeutralPress = () => {
+    console.log('Neutral button pressed');
+  };
 
   _alertChoiceButtons = [
     {
       text: 'No',
-      onPress: this._onCloseAlert,
+      onPress: this._onNegativePress,
       style: 'negative'
     },
     {
       text: 'Yes, I do',
-      onPress: this._onAcceptAlert,
+      onPress: this._onPositivePress,
       style: 'positive'
+    }
+  ];
+
+  _alertSimpleButton = [
+    {
+      text: 'Cancel',
+      onPress: this._onNeutralPress,
+      style: 'neutral'
     }
   ];
 
@@ -72,6 +84,18 @@ export default class App extends Component {
           </View>
         </View>
         <Alert
+          ref={(a) => {
+            this._simpleAlert = a
+          }}
+          icon={<TouchIcon />}
+          title="Just FYI"
+          text="React native is the fastest way to build a multiplatform application "
+          buttons={this._alertSimpleButton}
+        />
+        <Alert
+          ref={(a) => {
+            this._choiceAlert = a
+          }}
           icon={<TouchIcon />}
           title="Touch ID"
           text="Would you like to activate your Touch ID to log in?"
