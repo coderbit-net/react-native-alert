@@ -7,6 +7,7 @@ import {
   Button
 } from 'react-native';
 import Alert from './components/Alert';
+import TouchIcon from './components/graphics/TouchIcon';
 
 export default class App extends Component {
 
@@ -71,6 +72,9 @@ export default class App extends Component {
           </View>
         </View>
         <Alert
+          icon={<TouchIcon />}
+          title="Touch ID"
+          text="Would you like to activate your Touch ID to log in?"
           buttons={this._alertChoiceButtons}
         />
       </View>
