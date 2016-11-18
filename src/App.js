@@ -31,6 +31,14 @@ export default class App extends Component {
     console.log('Neutral button pressed');
   };
 
+  _alertSimpleButton = [
+    {
+      text: 'Got it',
+      onPress: this._onNeutralPress,
+      style: 'neutral'
+    }
+  ];
+
   _alertChoiceButtons = [
     {
       text: 'No',
@@ -41,14 +49,6 @@ export default class App extends Component {
       text: 'Yes, I do',
       onPress: this._onPositivePress,
       style: 'positive'
-    }
-  ];
-
-  _alertSimpleButton = [
-    {
-      text: 'Cancel',
-      onPress: this._onNeutralPress,
-      style: 'neutral'
     }
   ];
 

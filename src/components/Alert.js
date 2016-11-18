@@ -12,10 +12,11 @@ const Screen = Dimensions.get('window');
 
 export default class Alert extends PureComponent {
   static propTypes = {
+    icon: PropTypes.node,
+    title: PropTypes.string,
+    text: PropTypes.string,
     buttons: PropTypes.arrayOf(
       PropTypes.shape({
-          visible: PropTypes.bool,
-          icon: PropTypes.node,
           text: PropTypes.string.isRequired,
           onPress: PropTypes.func.isRequired,
           style: PropTypes.string.isRequired
@@ -25,25 +26,24 @@ export default class Alert extends PureComponent {
   };
 
   state = {
-    visible: this.props.visible || false
+    visible: this.props.visible || false,
+    animatedValue: new Animated.Value(1000)
   };
 
-  _visibility() {
-    const {visible} = this.state;
-
-    if (visible) {
-      return {top: 0};
-    } else {
-      return {top: 1000};
-    }
-  }
-
   _show = () => {
-    this.setState({ visible: true });
+    this.setState({visible: true});
+    Animated.timing(this.state.animatedValue, {
+      toValue: 0,
+      duration: 300
+    }).start();
   };
 
   _hide = () => {
-    this.setState({ visible: false });
+    this.setState({visible: false});
+    Animated.timing(this.state.animatedValue, {
+      toValue: 1000,
+      duration: 400
+    }).start();
   };
 
   _renderButtons(buttons) {
@@ -70,7 +70,7 @@ export default class Alert extends PureComponent {
   };
 
   render() {
-    // console.log(Screen);
+    const {animatedValue} = this.state;
     const {
       icon,
       title,
@@ -78,10 +78,11 @@ export default class Alert extends PureComponent {
       buttons
     } = this.props;
 
+    console.log(animatedValue);
     return (
-      <View style={[
+      <Animated.View style={[
         styles.alert,
-        this._visibility()
+        {top: animatedValue}
       ]}>
         <View style={styles.overlay}/>
         <View style={styles.container}>
@@ -96,7 +97,7 @@ export default class Alert extends PureComponent {
             {this._renderButtons(buttons)}
           </View>
         </View>
-      </View>
+      </Animated.View>
     )
   }
 }
@@ -117,9 +118,9 @@ const styles = StyleSheet.create({
     ...absolutePosition,
   },
   overlay: {
-    backgroundColor: '#B26E0F',
+    backgroundColor: '#000000',
     flex: 1,
-    opacity: 0.5,
+    opacity: 0.7,
     ...absolutePosition,
   },
   container: {
