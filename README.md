@@ -15,12 +15,12 @@
 
 ### Properties ###
 + icon: svg element
-+ title: string.isRequired
-+ message: string
++ title: string
++ text: string
 + buttons: array [{text, onPress, style}] 
-- text: string
-- onPress: function
-- style: theme preDefined ['neutral', 'negative', 'positive']
+  - text: string
+  - onPress: function
+  - style: theme preDefined ['neutral', 'negative', 'positive']
 
 ### Styles ###
 - container
