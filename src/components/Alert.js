@@ -26,7 +26,8 @@ export default class Alert extends PureComponent {
 
   state = {
     visible: false,
-    animatedValue: new Animated.Value(1000)
+    animatedPosition: new Animated.Value(1000),
+    animatedOpacity: new Animated.Value(0)
   };
 
   _show = () => {
@@ -34,19 +35,32 @@ export default class Alert extends PureComponent {
 
     if (visible) {
       this.setState({ visible: true });
-      Animated.timing(this.state.animatedValue, {
-        toValue: 0,
-        duration: 300
-      }).start();
+
+      Animated.sequence([
+        Animated.timing(this.state.animatedPosition, {
+          toValue: 0,
+          duration: 1
+        }),
+        Animated.timing(this.state.animatedOpacity, {
+          toValue: 1,
+          duration: 300
+        })
+      ]).start();
     }
   };
 
   _hide = () => {
     this.setState({ visible: false });
-    Animated.timing(this.state.animatedValue, {
-      toValue: 1000,
-      duration: 400
-    }).start();
+    Animated.sequence([
+      Animated.timing(this.state.animatedOpacity, {
+        toValue: 0,
+        duration: 400
+      }),
+      Animated.timing(this.state.animatedPosition, {
+        toValue: 1000,
+        duration: 1
+      })
+    ]).start();
   };
 
   _onButtonPress = (buttonPressProp) => {
@@ -96,7 +110,7 @@ export default class Alert extends PureComponent {
   };
 
   render() {
-    const { animatedValue } = this.state;
+    const { animatedPosition, animatedOpacity } = this.state;
     const {
       icon,
       title,
@@ -108,7 +122,8 @@ export default class Alert extends PureComponent {
       <Animated.View
         style={[
           styles.alert,
-          { top: animatedValue }
+          { top: animatedPosition },
+          { opacity : animatedOpacity }
         ]}
       >
         <View style={styles.overlay } />
