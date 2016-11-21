@@ -1,7 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import {
   Animated,
-  Dimensions,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -26,7 +25,7 @@ export default class Alert extends PureComponent {
 
   state = {
     visible: false,
-    animatedPosition: new Animated.Value(1000),
+    viewPosition: 1000,
     animatedOpacity: new Animated.Value(0)
   };
 
@@ -34,33 +33,28 @@ export default class Alert extends PureComponent {
     const { visible } = this.props;
 
     if (visible) {
-      this.setState({ visible: true });
+      this.setState({
+        visible: true,
+        viewPosition: 0
+      });
 
-      Animated.sequence([
-        Animated.timing(this.state.animatedPosition, {
-          toValue: 0,
-          duration: 1
-        }),
-        Animated.timing(this.state.animatedOpacity, {
-          toValue: 1,
-          duration: 300
-        })
-      ]).start();
+      Animated.timing(this.state.animatedOpacity, {
+        toValue: 1,
+        duration: 300
+      }).start();
     }
   };
 
   _hide = () => {
-    this.setState({ visible: false });
-    Animated.sequence([
-      Animated.timing(this.state.animatedOpacity, {
-        toValue: 0,
-        duration: 400
-      }),
-      Animated.timing(this.state.animatedPosition, {
-        toValue: 1000,
-        duration: 1
-      })
-    ]).start();
+    Animated.timing(this.state.animatedOpacity, {
+      toValue: 0,
+      duration: 200
+    }).start(() => {
+      this.setState({
+        visible: false,
+        viewPosition: 1000
+      });
+    });
   };
 
   _onButtonPress = (buttonPressProp) => {
@@ -110,7 +104,7 @@ export default class Alert extends PureComponent {
   };
 
   render() {
-    const { animatedPosition, animatedOpacity } = this.state;
+    const { viewPosition, animatedOpacity } = this.state;
     const {
       icon,
       title,
@@ -122,7 +116,7 @@ export default class Alert extends PureComponent {
       <Animated.View
         style={[
           styles.alert,
-          { top: animatedPosition },
+          { top: viewPosition },
           { opacity : animatedOpacity }
         ]}
       >
