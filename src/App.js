@@ -87,6 +87,7 @@ export default class App extends Component {
           ref={(a) => {
             this._simpleAlert = a;
           }}
+          visible
           icon={<TouchIcon />}
           title="Just FYI"
           text="React native is the fastest way to build a multi platform application "
@@ -96,6 +97,7 @@ export default class App extends Component {
           ref={(a) => {
             this._choiceAlert = a;
           }}
+          visible
           icon={<TouchIcon />}
           title="Touch ID"
           text="Would you like to activate your Touch ID to log in?"

@@ -10,14 +10,15 @@ import {
 
 export default class Alert extends PureComponent {
   static propTypes = {
-    icon: PropTypes.node,
+    visible: PropTypes.bool,
+    icon: PropTypes.element,
     title: PropTypes.string,
     text: PropTypes.string,
     buttons: PropTypes.arrayOf(
       PropTypes.shape({
         text: PropTypes.string.isRequired,
-        onPress: PropTypes.func.isRequired,
-        style: PropTypes.string.isRequired
+        onPress: PropTypes.func,
+        style: PropTypes.oneOf(['neutral', 'negative', 'positive'])
       }
       )
     )
@@ -29,11 +30,15 @@ export default class Alert extends PureComponent {
   };
 
   _show = () => {
-    this.setState({ visible: true });
-    Animated.timing(this.state.animatedValue, {
-      toValue: 0,
-      duration: 300
-    }).start();
+    const { visible } = this.props;
+
+    if (visible) {
+      this.setState({ visible: true });
+      Animated.timing(this.state.animatedValue, {
+        toValue: 0,
+        duration: 300
+      }).start();
+    }
   };
 
   _hide = () => {
@@ -44,6 +49,11 @@ export default class Alert extends PureComponent {
     }).start();
   };
 
+  _onButtonPress = (buttonPressProp) => {
+    buttonPressProp();
+    this._hide();
+  };
+
   _renderButtons(buttons) {
     return (
       buttons.map(
@@ -52,12 +62,9 @@ export default class Alert extends PureComponent {
             <TouchableOpacity
               style={buttonsStyles[button.style]}
               key={index}
-              onPress={() => {
-                button.onPress();
-                this._hide();
-              }}
+              onPress={() => this._onButtonPress(button.onPress)}
             >
-              <Text style={[buttonsStyles[`${button.style}Text`], buttonsStyles.text]}>
+              <Text style={[buttonsStyles.text, buttonsStyles[`${button.style}Text`]]}>
                 {button.text}
               </Text>
             </TouchableOpacity>
@@ -66,6 +73,27 @@ export default class Alert extends PureComponent {
       )
     );
   }
+
+  _renderBody = (icon, title, text) => {
+    if (icon || title || text) {
+      return (
+        <View style={styles.body}>
+          <View style={styles.icon}>
+            {icon}
+          </View>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.text}>{text}</Text>
+        </View>
+      );
+    }
+    else {
+      return (
+        <View style={styles.body}>
+          <Text style={styles.text}>ALERT</Text>
+        </View>
+      );
+    }
+  };
 
   render() {
     const { animatedValue } = this.state;
@@ -76,23 +104,16 @@ export default class Alert extends PureComponent {
       buttons
     } = this.props;
 
-    console.log(animatedValue);
     return (
       <Animated.View
         style={[
           styles.alert,
-        { top: animatedValue }
+          { top: animatedValue }
         ]}
       >
-        <View style={styles.overlay} />
+        <View style={styles.overlay } />
         <View style={styles.container}>
-          <View style={styles.body}>
-            <View style={styles.icon}>
-              {icon}
-            </View>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.text}>{text}</Text>
-          </View>
+          { this._renderBody(icon, title, text) }
           <View style={styles.actions}>
             {this._renderButtons(buttons)}
           </View>
