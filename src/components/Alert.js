@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Button
 } from 'react-native';
 
 export default class Alert extends PureComponent {
@@ -12,15 +13,13 @@ export default class Alert extends PureComponent {
     visible: PropTypes.bool,
     icon: PropTypes.element,
     title: PropTypes.string,
-    text: PropTypes.string,
+    text: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     link: PropTypes.string,
     buttons: PropTypes.arrayOf(
       PropTypes.shape({
         text: PropTypes.string.isRequired,
         onPress: PropTypes.func,
-        style: PropTypes.oneOf(['neutral', 'negative', 'positive']),
-        backgroundColor: PropTypes.string,
-        textColor: PropTypes.string
+        style: PropTypes.oneOf(['neutral', 'negative', 'positive'])
       })
     )
   };
@@ -32,7 +31,7 @@ export default class Alert extends PureComponent {
   };
 
   _show = () => {
-    const {visible} = this.props;
+    const { visible } = this.props;
 
     if (visible) {
       this.setState({
@@ -65,29 +64,23 @@ export default class Alert extends PureComponent {
   };
 
   _renderButtons(buttons) {
+    if (buttons.length === 1) {
+      buttons[0].containerStyle = buttonsStyles.single;
+    } else {
+      buttons[0].containerStyle = buttonsStyles.first;
+      buttons[buttons.length - 1].containerStyle = buttonsStyles.last;
+    }
+
     return (
       buttons.map(
         (button, index) => {
-          const _customBackgroundColor = () => {
-            if (button.backgroundColor) {
-              return [buttonsStyles[button.style], {backgroundColor: button.backgroundColor}];
-            }
-            return buttonsStyles[button.style];
-          };
-
-          const _customTextColor = () => {
-            if (button.textColor) {
-              return [buttonsStyles.text, buttonsStyles[`${button.style}Text`], {color: button.textColor}];
-            }
-            return [buttonsStyles.text, buttonsStyles[`${button.style}Text`]];
-          };
-
           return (
             <TouchableOpacity
-              style={_customBackgroundColor()}
+              style={[buttonWrapper, buttonsStyles[button.style], button.containerStyle]}
               key={index}
-              onPress={() => this._onButtonPress(button.onPress)}>
-              <Text style={_customTextColor()}>
+              onPress={() => this._onButtonPress(button.onPress)}
+            >
+              <Text style={[buttonsStyles.text, buttonsStyles[`${button.style}Text`]]}>
                 {button.text}
               </Text>
             </TouchableOpacity>
@@ -106,20 +99,19 @@ export default class Alert extends PureComponent {
           </View>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.text}>{text}</Text>
-          <Text style={styles.link}>{link}</Text>
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.body}>
-          <Text style={styles.text}>ALERT</Text>
         </View>
       );
     }
+    return (
+      <View style={styles.body}>
+        <Text style={styles.text}>ALERT</Text>
+      </View>
+    );
+
   };
 
   render() {
-    const {viewPosition, animatedOpacity} = this.state;
+    const { viewPosition, animatedOpacity } = this.state;
     const {
       icon,
       title,
@@ -132,11 +124,11 @@ export default class Alert extends PureComponent {
       <Animated.View
         style={[
           styles.alert,
-          {top: viewPosition},
-          {opacity: animatedOpacity}
+          { top: viewPosition },
+          { opacity: animatedOpacity }
         ]}
       >
-        <View style={styles.overlay}/>
+        <View style={styles.overlay} />
         <View style={styles.container}>
           { this._renderBody(icon, title, text, link) }
           <View style={styles.actions}>
@@ -192,19 +184,11 @@ const styles = StyleSheet.create({
     color: '#2d363d'
   },
   text: {
-    width: 260,
+    width: 274,
     paddingVertical: 10,
     textAlign: 'center',
     fontSize: 18,
     color: '#95a5b2'
-  },
-  link: {
-    width: 260,
-    marginTop: -10,
-    paddingBottom: 10,
-    textAlign: 'center',
-    fontSize: 18,
-    color: '#007aff'
   },
   actions: {
     flexDirection: 'row',
@@ -226,20 +210,23 @@ const buttonWrapper = {
 
 const buttonsStyles = {
   negative: {
-    ...buttonWrapper,
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
+  },
+  positive: {
+    backgroundColor: '#FFB144'
+  },
+  neutral: {
+    backgroundColor: 'transparent'
+  },
+  first: {
     borderBottomLeftRadius: 8,
     borderWidth: 0
   },
-  positive: {
-    ...buttonWrapper,
-    backgroundColor: '#FFB144',
+  last: {
     borderBottomRightRadius: 8,
     borderWidth: 0
   },
-  neutral: {
-    ...buttonWrapper,
-    backgroundColor: 'transparent',
+  single: {
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
     borderWidth: 0
