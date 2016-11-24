@@ -10,6 +10,7 @@ import Alert from './components/Alert';
 import TouchIcon from './components/graphics/TouchIcon';
 import EmailIcon from './components/graphics/EmailIcon';
 import EmailErrorIcon from './components/graphics/EmailErrorIcon';
+import PhoneErrorIcon from './components/graphics/PhoneErrorIcon';
 
 export default class App extends Component {
 
@@ -230,7 +231,7 @@ export default class App extends Component {
             this._phoneAlert = a;
           }}
           visible
-          icon={<TouchIcon color="#ff3b30"/>}
+          icon={<PhoneErrorIcon />}
           title="Notification!"
           text={
             <Text>Phone number <Text style={{fontWeight: '600', color: '#2d363d'}}>+380935697845</Text> is used for
