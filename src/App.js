@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import Alert from './components/Alert';
 import TouchIcon from './components/graphics/TouchIcon';
+import EmailIcon from './components/graphics/EmailIcon';
 
 export default class App extends Component {
 
@@ -17,6 +18,10 @@ export default class App extends Component {
 
   _onChoiceAlert = () => {
     this._choiceAlert._show();
+  };
+
+  _onThankYouAlert = () => {
+    this._thankYouAlert._show();
   };
 
   _onNegativePress = () => {
@@ -52,6 +57,16 @@ export default class App extends Component {
     }
   ];
 
+  _alertThankYouButton = [
+    {
+      text: 'OK',
+      onPress: this._onNeutralPress,
+      style: 'neutral',
+      backgroundColor: '#FFB144',
+      textColor: '#ffffff'
+    }
+  ];
+
   render() {
     return (
       <View style={styles.container}>
@@ -82,6 +97,13 @@ export default class App extends Component {
               title="Choice Alert"
             />
           </View>
+          <View style={styles.buttonWrap}>
+            <Button
+              onPress={this._onThankYouAlert}
+              color="white"
+              title="Thank You Alert"
+            />
+          </View>
         </View>
         <Alert
           ref={(a) => {
@@ -102,6 +124,17 @@ export default class App extends Component {
           title="Touch ID"
           text="Would you like to activate your Touch ID to log in?"
           buttons={this._alertChoiceButtons}
+        />
+        <Alert
+          ref={(a) => {
+            this._thankYouAlert = a;
+          }}
+          visible
+          icon={<EmailIcon />}
+          title="Tank You!"
+          text="Please verify your email address by clicking the link we sent to"
+          link="yehor.kol@gmail.com"
+          buttons={this._alertThankYouButton}
         />
       </View>
     );

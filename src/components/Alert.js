@@ -13,13 +13,15 @@ export default class Alert extends PureComponent {
     icon: PropTypes.element,
     title: PropTypes.string,
     text: PropTypes.string,
+    link: PropTypes.string,
     buttons: PropTypes.arrayOf(
       PropTypes.shape({
         text: PropTypes.string.isRequired,
         onPress: PropTypes.func,
-        style: PropTypes.oneOf(['neutral', 'negative', 'positive'])
-      }
-      )
+        style: PropTypes.oneOf(['neutral', 'negative', 'positive']),
+        backgroundColor: PropTypes.string,
+        textColor: PropTypes.string
+      })
     )
   };
 
@@ -30,7 +32,7 @@ export default class Alert extends PureComponent {
   };
 
   _show = () => {
-    const { visible } = this.props;
+    const {visible} = this.props;
 
     if (visible) {
       this.setState({
@@ -66,13 +68,26 @@ export default class Alert extends PureComponent {
     return (
       buttons.map(
         (button, index) => {
+          const _customBackgroundColor = () => {
+            if (button.backgroundColor) {
+              return [buttonsStyles[button.style], {backgroundColor: button.backgroundColor}];
+            }
+            return buttonsStyles[button.style];
+          };
+
+          const _customTextColor = () => {
+            if (button.textColor) {
+              return [buttonsStyles.text, buttonsStyles[`${button.style}Text`], {color: button.textColor}];
+            }
+            return [buttonsStyles.text, buttonsStyles[`${button.style}Text`]];
+          };
+
           return (
             <TouchableOpacity
-              style={buttonsStyles[button.style]}
+              style={_customBackgroundColor()}
               key={index}
-              onPress={() => this._onButtonPress(button.onPress)}
-            >
-              <Text style={[buttonsStyles.text, buttonsStyles[`${button.style}Text`]]}>
+              onPress={() => this._onButtonPress(button.onPress)}>
+              <Text style={_customTextColor()}>
                 {button.text}
               </Text>
             </TouchableOpacity>
@@ -82,7 +97,7 @@ export default class Alert extends PureComponent {
     );
   }
 
-  _renderBody = (icon, title, text) => {
+  _renderBody = (icon, title, text, link) => {
     if (icon || title || text) {
       return (
         <View style={styles.body}>
@@ -91,10 +106,10 @@ export default class Alert extends PureComponent {
           </View>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.text}>{text}</Text>
+          <Text style={styles.link}>{link}</Text>
         </View>
       );
-    }
-    else {
+    } else {
       return (
         <View style={styles.body}>
           <Text style={styles.text}>ALERT</Text>
@@ -104,11 +119,12 @@ export default class Alert extends PureComponent {
   };
 
   render() {
-    const { viewPosition, animatedOpacity } = this.state;
+    const {viewPosition, animatedOpacity} = this.state;
     const {
       icon,
       title,
       text,
+      link,
       buttons
     } = this.props;
 
@@ -116,13 +132,13 @@ export default class Alert extends PureComponent {
       <Animated.View
         style={[
           styles.alert,
-          { top: viewPosition },
-          { opacity : animatedOpacity }
+          {top: viewPosition},
+          {opacity: animatedOpacity}
         ]}
       >
-        <View style={styles.overlay } />
+        <View style={styles.overlay}/>
         <View style={styles.container}>
-          { this._renderBody(icon, title, text) }
+          { this._renderBody(icon, title, text, link) }
           <View style={styles.actions}>
             {this._renderButtons(buttons)}
           </View>
@@ -176,11 +192,19 @@ const styles = StyleSheet.create({
     color: '#2d363d'
   },
   text: {
-    width: 242,
+    width: 260,
     paddingVertical: 10,
     textAlign: 'center',
     fontSize: 18,
     color: '#95a5b2'
+  },
+  link: {
+    width: 260,
+    marginTop: -10,
+    paddingBottom: 10,
+    textAlign: 'center',
+    fontSize: 18,
+    color: '#007aff'
   },
   actions: {
     flexDirection: 'row',
