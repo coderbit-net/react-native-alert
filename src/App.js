@@ -4,115 +4,17 @@ import {
   StatusBar,
   Text,
   View,
-  Button
+  Dimensions,
+  TouchableOpacity
 } from 'react-native';
-import Alert from './components/Alert';
-import TouchIcon from './components/graphics/TouchIcon';
-import EmailIcon from './components/graphics/EmailIcon';
-import EmailErrorIcon from './components/graphics/EmailErrorIcon';
-import PhoneErrorIcon from './components/graphics/PhoneErrorIcon';
+import DashboardIcon from './components/graphics/DashboardIcon';
+import AddIcon from './components/graphics/AddIcon';
+import AccountIcon from './components/graphics/AccountIcon';
+import SettingsIcon from './components/graphics/SettingsIcon';
+import CardsIcon from './components/graphics/CardsIcon';
+import DashIcon from './components/graphics/DashIcon';
 
 export default class App extends Component {
-
-  _onSimpleAlert = () => {
-    this._simpleAlert._show();
-  };
-
-  _onChoiceAlert = () => {
-    this._choiceAlert._show();
-  };
-
-  _onThankYouAlert = () => {
-    this._thankYouAlert._show();
-  };
-
-  _onEmailErrorAlert = () => {
-    this._emailErrorAlert._show();
-  };
-
-  _onMultiOptionAlert = () => {
-    this._multiOptionAlert._show();
-  };
-
-  _onPhoneAlert = () => {
-    this._phoneAlert._show();
-  };
-
-  _onNegativePress = () => {
-    console.log('Negative button pressed');
-  };
-
-  _onPositivePress = () => {
-    console.log('Positive button pressed');
-  };
-
-  _onNeutralPress = () => {
-    console.log('Neutral button pressed');
-  };
-
-  _alertSimpleButton = [
-    {
-      text: 'Got it',
-      onPress: this._onNeutralPress,
-      style: 'neutral'
-    }
-  ];
-
-  _alertChoiceButtons = [
-    {
-      text: 'No',
-      onPress: this._onNegativePress,
-      style: 'negative'
-    },
-    {
-      text: 'Yes, I do',
-      onPress: this._onPositivePress,
-      style: 'positive'
-    }
-  ];
-
-  _alertThankYouButton = [
-    {
-      text: 'OK',
-      onPress: this._onNeutralPress,
-      style: 'positive'
-    }
-  ];
-
-  _alertEmailErrorButton = [
-    {
-      text: 'OK',
-      onPress: this._onNeutralPress,
-      style: 'positive'
-    }
-  ];
-
-  _alertPhoneButton = [
-    {
-      text: 'OK',
-      onPress: this._onNeutralPress,
-      style: 'positive'
-    }
-  ];
-
-  _alertMultiOptionButton = [
-    {
-      text: 'No',
-      onPress: this._onNegativePress,
-      style: 'negative'
-    },
-    {
-      text: 'Yes',
-      onPress: this._onPositivePress,
-      style: 'positive'
-    },
-    {
-      text: 'Later',
-      onPress: this._onNeutralPress,
-      style: 'neutral'
-    }
-  ];
-
 
   render() {
     return (
@@ -120,125 +22,56 @@ export default class App extends Component {
         <StatusBar
           barStyle="light-content"
         />
-        <View style={styles.info}>
-          <Text style={styles.welcome}>
-            Welcome to React Native!
+        <View style={styles.content}>
+          <DashboardIcon />
+          <Text style={styles.title}>Dashboard is empty!</Text>
+          <Text style={styles.message}>
+            Add your cards to send money
+            instantly and see all history
+            of transactions
           </Text>
-          <Text style={styles.instructions}>
-            This is a sample application for {'\n'}
-            custom alert popup component
-          </Text>
+          <TouchableOpacity style={styles.addCard}>
+            <View>
+              <Text style={styles.addCardText}>Add Card</Text>
+            </View>
+          </TouchableOpacity>
         </View>
-        <View style={styles.actions}>
-          <View style={styles.buttonWrap}>
-            <Button
-              onPress={this._onSimpleAlert}
-              color="white"
-              title="Simple Alert"
-            />
+        <View style={styles.tabBar}>
+          <View style={styles.linksContainer}>
+            <View style={styles.link}>
+              <DashIcon />
+              <Text style={styles.linkText}>
+                Dashboard
+              </Text>
+            </View>
+            <View style={styles.link}>
+              <CardsIcon />
+              <Text style={styles.linkText}>
+                My Cards
+              </Text>
+            </View>
+            <View style={styles.link}>
+              <Text style={styles.linkText}>
+                &bsp;
+              </Text>
+            </View>
+            <View style={styles.link}>
+              <AccountIcon />
+              <Text style={styles.linkText}>
+                Account
+              </Text>
+            </View>
+            <View style={styles.link}>
+              <SettingsIcon />
+              <Text style={styles.linkText}>
+                Settings
+              </Text>
+            </View>
           </View>
-          <View style={styles.buttonWrap}>
-            <Button
-              onPress={this._onChoiceAlert}
-              color="white"
-              title="Choice Alert"
-            />
-          </View>
-          <View style={styles.buttonWrap}>
-            <Button
-              onPress={this._onThankYouAlert}
-              color="white"
-              title="Thank You Alert"
-            />
-          </View>
-          <View style={styles.buttonWrap}>
-            <Button
-              onPress={this._onEmailErrorAlert}
-              color="white"
-              title="Email Error Alert"
-            />
-          </View>
-          <View style={styles.buttonWrap}>
-            <Button
-              onPress={this._onMultiOptionAlert}
-              color="white"
-              title="Multi Option Alert"
-            />
-          </View>
-          <View style={styles.buttonWrap}>
-            <Button
-              onPress={this._onPhoneAlert}
-              color="white"
-              title="Phone Alert"
-            />
-          </View>
+          <TouchableOpacity style={styles.addButton}>
+            <AddIcon />
+          </TouchableOpacity>
         </View>
-        <Alert
-          ref={(a) => {
-            this._simpleAlert = a;
-          }}
-          visible
-          icon={<TouchIcon />}
-          title="Just FYI"
-          text="React native is the fastest way to build a multi platform application "
-          buttons={this._alertSimpleButton}
-        />
-        <Alert
-          ref={(a) => {
-            this._choiceAlert = a;
-          }}
-          visible
-          icon={<TouchIcon />}
-          title="Touch ID"
-          text="Would you like to activate your Touch ID to log in?"
-          buttons={this._alertChoiceButtons}
-        />
-        <Alert
-          ref={(a) => {
-            this._thankYouAlert = a;
-          }}
-          visible
-          icon={<EmailIcon />}
-          title="Thank You!"
-          text={ <Text>Please verify your email address by clicking the link we sent to <Text style={{color: '#007aff'}}>yehor.kol@gmail.com</Text></Text> }
-          buttons={this._alertThankYouButton}
-        />
-        <Alert
-          ref={(a) => {
-            this._emailErrorAlert = a;
-          }}
-          visible
-          icon={<EmailErrorIcon />}
-          title="Notification!"
-          text={
-            <Text>Email, <Text style={{fontWeight: '600', color: '#2d363d'}}>mail@gmail.com</Text> is used for another
-              account</Text>
-          }
-          buttons={this._alertEmailErrorButton}
-        />
-        <Alert
-          ref={(a) => {
-            this._multiOptionAlert = a;
-          }}
-          visible
-          icon={<TouchIcon color="#ff3b30"/>}
-          title="Notification!"
-          text="Email is linked with another account, reset it?"
-          buttons={this._alertMultiOptionButton}
-        />
-        <Alert
-          ref={(a) => {
-            this._phoneAlert = a;
-          }}
-          visible
-          icon={<PhoneErrorIcon />}
-          title="Notification!"
-          text={
-            <Text>Phone number <Text style={{fontWeight: '600', color: '#2d363d'}}>+380935697845</Text> is used for
-              another account</Text>
-          }
-          buttons={this._alertPhoneButton}
-        />
       </View>
     );
   }
@@ -247,35 +80,84 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#006EB2'
+    backgroundColor: '#ffffff'
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    color: '#FFFFFF',
-    margin: 10
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#FFFFFF',
-    marginBottom: 5
-  },
-  info: {
+  content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
-  actions: {
-    flex: 3
+  title: {
+    fontWeight: '600',
+    color: '#2d363d',
+    fontSize: 18,
+    textAlign: 'center',
+    paddingVertical: 10
   },
-  buttonWrap: {
-    width: 200,
-    alignSelf: 'center',
-    marginVertical: 10,
-    paddingVertical: 6,
-    backgroundColor: '#2BADFF',
-    borderColor: '#FFFFFF',
-    borderWidth: 1,
-    borderRadius: 2
+  addCard: {
+    margin: 20,
+    width: 210,
+    height: 50,
+    borderRadius: 4,
+    borderColor: '#95a5b2',
+    borderWidth: StyleSheet.hairlineWidth * 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  addCardText: {
+    color: '#95a5b2',
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  message: {
+    width: 250,
+    color: '#95a5b2',
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  tabBar: {
+    position: 'absolute',
+    width: Dimensions.get('window').width,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    height: 55,
+    backgroundColor: '#ffffff'
+  },
+  addButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    borderColor: 'transparent',
+    borderWidth: StyleSheet.hairlineWidth * 1,
+    backgroundColor: '#ffb144',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center'
+  },
+  linksContainer: {
+    width: Dimensions.get('window').width,
+    height: 50,
+    borderTopWidth: 1,
+    borderColor: '#cad2d8',
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  link: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 30
+  },
+  linkText: {
+
+    color: '#95a5b2',
+    fontSize: 10,
+    textAlign: 'center'
   }
+
 });
